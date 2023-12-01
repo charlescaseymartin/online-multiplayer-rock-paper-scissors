@@ -1,3 +1,4 @@
+import GameSwitcher from '@/components/elements/gameSwitcher/gameSwitcher';
 import Container from '@/components/shared/container';
 import Paragraph from '@/components/shared/paragraph';
 import Title from '@/components/shared/title';
@@ -17,7 +18,7 @@ export default function Home() {
           Facilis ipsum laudantium mollitia consequatur, impedit deleniti sapiente itaque optio,
           reiciendis magni repudiandae ad sint natus, obcaecati nesciunt quo nam laborum! Architecto?
         </Paragraph>
-        
+        <GameSwitcher />
       </Container>
     </main>
   )

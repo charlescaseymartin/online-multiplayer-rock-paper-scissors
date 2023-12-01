@@ -38,8 +38,6 @@ export function ThemeContextProvider({ children }: ThemeContextProviderType) {
     }
   }, [])
 
-  useEffect(() => console.log({ isDarkMode }), [isDarkMode])
-
   return (
     <AppThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
       {children}
