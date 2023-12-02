@@ -2,21 +2,25 @@
   {
     "id": "5960a59a-4c1b-4be1-931c-0eb5afba6a70",
     "name": "Rock Paper Scissors",
+    "slug": "rock-paper-scissors",
     "icon": "/images/rock-paper-scissors.png"
   },
   {
     "id": "7bede936-23c5-43bb-b732-1754a6c21792",
     "name": "Tic Tac Toe",
+    "slug": "tic-tac-toe",
     "icon": "/images/tic-tac-toe.png"
   },
   {
     "id": "9015e6e3-a03c-4101-9559-591776220f9c",
     "name": "Match Pairs",
+    "slug": "match-pairs",
     "icon": "/images/match-pairs.png"
   },
   {
     "id": "bcec6fb9-15bc-4655-8195-463cbb819efc",
     "name": "Word Search",
+    "slug": "word-search",
     "icon": "/images/word-search.png"
   }
 ]

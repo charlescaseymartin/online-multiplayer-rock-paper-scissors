@@ -6,7 +6,7 @@ import Title from '@/components/shared/title';
 
 export default function Home() {
   return (
-    <main className='pt-32 lg:pt-36'>
+    <main className='pt-20 md:pt-24'>
       <Container>
         <div className='flex justify-center w-full'>
           <Title>

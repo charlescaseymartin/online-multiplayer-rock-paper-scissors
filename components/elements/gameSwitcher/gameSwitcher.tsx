@@ -8,29 +8,32 @@ import GamesData from '@/data/games.json';
 
 export type GameItemType = {
   id: string;
+  slug: string;
   name: string;
   icon: string;
 }
 
 
 export default function GameSwitcher() {
-  const [currentGameId, setCurrentGameId] = useState<string>(GamesData[0].id);
-  const selectedGameId = 'selected-game-id';
+  const [currentGame, setCurrentGame] = useState<GameItemType>(GamesData[0]);
+  const storedSelectedGameId = 'selected-game-id';
 
   const toggleCurrentGame = (newId: string) => {
     const foundGame = GamesData.find(({ id }) => id === newId)
     if (foundGame) {
-      setCurrentGameId(foundGame.id);
-      localStorage.setItem(selectedGameId, foundGame.id);
+      setCurrentGame(foundGame);
+      localStorage.setItem(storedSelectedGameId, foundGame.id);
     }
   }
 
   useEffect(() => {
-    const storedGameId = localStorage.getItem(selectedGameId);
-    if(storedGameId) {
-      setCurrentGameId(storedGameId)
+    // #### add loading state
+    const storedGameId = localStorage.getItem(storedSelectedGameId);
+    if (storedGameId) {
+      const selectedGame = GamesData.find(({ id }) => id === storedGameId);
+      if(selectedGame) setCurrentGame(selectedGame)
     } else {
-      localStorage.setItem(selectedGameId, currentGameId);
+      localStorage.setItem(storedSelectedGameId, currentGame.id);
     }
   }, [])
 
@@ -38,8 +41,12 @@ export default function GameSwitcher() {
 
   return (
     <div>
-      <GameSwitcherNav games={GamesData} selectGame={toggleCurrentGame} />
-      <GameSwitcherDisplay />
+      <GameSwitcherNav
+        games={GamesData}
+        onGameSelect={toggleCurrentGame}
+        selectedGameId={currentGame.id}
+      />
+      <GameSwitcherDisplay selectedGame={currentGame} />
     </div>
   )
 }
