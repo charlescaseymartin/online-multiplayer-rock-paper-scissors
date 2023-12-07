@@ -9,6 +9,45 @@ type RockPaperScissorsPlayersHandsType = {
 }
 
 export default function RockPaperScissorsPlayersHands({ playerHand, computerHand }: RockPaperScissorsPlayersHandsType) {
+  const convertCollectionToList = (collection: HTMLCollection): Element[] => {
+    const results: Element[] = [];
+    for (let idx = 0; idx < collection.length; idx++) {
+      results.push(collection[idx]);
+    }
+    return results;
+  }
+
+  const displayPlayerHand = (selectedHand: RPSActions, listOfImages: Element[]) => {
+    // const currentImage = listOfImages.find(({ classList }) => !classList.contains('hidden'));
+    // if (currentImage) currentImage.classList.add('hidden');
+    let newImage = listOfImages[0];
+
+    listOfImages.forEach((imageElement) => {
+      const srcAttribute = imageElement.getAttribute('src');
+      if (srcAttribute && srcAttribute.includes(selectedHand)) {
+        newImage = imageElement;
+        return;
+      }
+    });
+
+    if (newImage) newImage.classList.remove('hidden');
+  }
+
+  const determinePlayersAction = (hand: RPSActions, listOfImages: Element[]) => {
+    switch (hand) {
+      case RPSActions.rock:
+        displayPlayerHand(hand, listOfImages);
+        break;
+
+      case RPSActions.paper:
+        displayPlayerHand(hand, listOfImages);
+        break;
+
+      case RPSActions.scissors:
+        displayPlayerHand(hand, listOfImages);
+        break;
+    }
+  }
 
   useEffect(() => {
     const container = document.getElementById('playersActions');
@@ -16,9 +55,15 @@ export default function RockPaperScissorsPlayersHands({ playerHand, computerHand
       const computersActions = container.children[0];
       const playersActions = container.children[1];
 
-      if (playerHand) {}
+      if (computerHand && computersActions) {
+        const computersActionList = convertCollectionToList(computersActions.children);
+        determinePlayersAction(computerHand, computersActionList);
+      }
 
-      if (computerHand) {}
+      if (playerHand && playersActions) {
+        const playersActionList = convertCollectionToList(playersActions.children);
+        determinePlayersAction(playerHand, playersActionList);
+      }
     }
   }, [playerHand, computerHand])
 

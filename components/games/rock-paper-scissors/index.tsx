@@ -45,6 +45,13 @@ export default function RockPaperScissors() {
 
   const onPlayerSelect = (action: RPSActions) => actionSelection(RPSUsers.player, action);
 
+  const toggleShakingFists = () => {
+    const shakingFists = document.querySelectorAll('.shake');
+    if (shakingFists) {
+      shakingFists.forEach((fist) => fist.classList.toggle('hidden'))
+    }
+  }
+
   const determineRoundWinner = (playerChoice: RPSActions, computerChoice: RPSActions) => {
     switch (playerChoice) {
       case RPSActions.rock:
@@ -81,23 +88,26 @@ export default function RockPaperScissors() {
   useEffect(() => {
     if (playersAction) {
       console.log('player selected:', playersAction);
+      toggleShakingFists();
+
       const actions = Object.values(RPSActions);
       const computerSelection = actions[Math.floor(Math.random() * actions.length)];
       actionSelection(RPSUsers.computer, computerSelection);
     }
   }, [playersAction])
 
-  // useEffect(() => {
-  //   if (playersAction && computersAction) {
-  //     console.log('calculating round winner');
-  //     console.log({ roundsPlayed, playersAction, computersAction });
-  //     determineRoundWinner(playersAction, computersAction);
-  //     setRoundsPlayed((prevState) => prevState + 1);
-  //     setPlayersAction(null);
-  //     setComputersAction(null);
-  //   }
-  //   console.log({ roundsPlayed, playersAction, computersAction });
-  // }, [playersAction, computersAction])
+  useEffect(() => {
+    if (playersAction && computersAction) {
+      console.log('calculating round winner');
+      console.log({ roundsPlayed, playersAction, computersAction });
+      determineRoundWinner(playersAction, computersAction);
+      setRoundsPlayed((prevState) => prevState + 1);
+      setPlayersAction(null);
+      setComputersAction(null);
+      toggleShakingFists();
+    }
+    console.log({ roundsPlayed, playersAction, computersAction });
+  }, [playersAction, computersAction])
 
   useEffect(() => {
     if (roundsPlayed == roundsToPlay) {
