@@ -1,5 +1,5 @@
 import { GameItemType } from './gameSwitcher';
-import RockPaperScissors from '@/components/games/rock-paper-scissors/rockPaperScissors';
+import RockPaperScissors from '@/components/games/rock-paper-scissors';
 import TicTacToe from '@/components/games/ticTacToe';
 import MatchPairs from '@/components/games/matchPairs';
 import WordSearch from '@/components/games/wordSearch';

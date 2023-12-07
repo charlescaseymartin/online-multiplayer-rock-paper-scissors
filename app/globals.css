@@ -31,10 +31,17 @@ body {
   font-family: "Raleway", sans-serif;
 }
 
+.fade-in {
+  animation: fading 3s 1;
+}
+
+@keyframes fading {
+  0% { opacity: 0 }
+  100% { opacity: 1 }
+}
+
 .shake {
-  animation-name: shake-animation;
-  animation-duration: 3s;
-  animation-iteration-count: infinite;
+  animation: shake-animation 3s infinite;
   transform-origin: bottom;
   display: inline-block;
 }
