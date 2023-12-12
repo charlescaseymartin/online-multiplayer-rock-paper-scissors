@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "next:dev": "next dev",
+    "next:dev": "node server",
     "next:build": "next build",
-    "next:start": "next start",
+    "next:start": "NODE_ENV=production node server",
     "next:lint": "next lint"
   },
   "dependencies": {
-    "next": "14.0.1",
+    "next": "^14.0.5-canary.7",
     "react": "^18",
     "react-dom": "^18",
     "socket.io": "^4.7.2",
