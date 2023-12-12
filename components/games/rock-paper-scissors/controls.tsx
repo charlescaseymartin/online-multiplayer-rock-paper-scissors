@@ -1,4 +1,4 @@
-import { RPSActions } from '.';
+import { RPSActions } from './types';
 
 
 type RockPaperScissorsControlsType = {

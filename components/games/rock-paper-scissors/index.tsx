@@ -3,33 +3,22 @@ import RockPaperScissorsControls from './controls';
 import RockPaperScissorsScores from './scores';
 import RockPaperScissorsPlayersHands from './playersHands';
 import RockPaperScissorsMenu from './menu';
+import { RPSActions, RPSResults } from './types';
+
 
 enum RPSUsers {
   player = 'player',
   computer = 'computer',
 }
 
-export enum RPSResults {
-  win = 'You Win!',
-  loose = 'You Loose...',
-  draw = 'Draw',
-}
-
-export enum RPSActions {
-  rock = 'rock',
-  paper = 'paper',
-  scissors = 'scissors',
-}
-
 export default function RockPaperScissors() {
   const [showMenu, setShowMenu] = useState(true);
   const [roundsPlayed, setRoundsPlayed] = useState(0);
   const [roundsToPlay, setRoundsToPlay] = useState(3);
-  const [isGameOver, setIsGameOver] = useState(false);
   const [playerScore, setPlayerScore] = useState(0);
   const [computerScore, setComputerScore] = useState(0);
-  const [computersAction, setComputersAction] = useState<RPSActions | null>(null);
-  const [playersAction, setPlayersAction] = useState<RPSActions | null>(null);
+  const [computersAction, setComputersAction] = useState<RPSActions>(RPSActions.fist);
+  const [playersAction, setPlayersAction] = useState<RPSActions>(RPSActions.fist);
   const [gameResults, setGameResults] = useState<RPSResults | null>(null);
 
   const actionSelection = (user: RPSUsers, action: RPSActions): void => {
@@ -44,13 +33,6 @@ export default function RockPaperScissors() {
   }
 
   const onPlayerSelect = (action: RPSActions) => actionSelection(RPSUsers.player, action);
-
-  const toggleShakingFists = () => {
-    const shakingFists = document.querySelectorAll('.shake');
-    if (shakingFists) {
-      shakingFists.forEach((fist) => fist.classList.toggle('hidden'))
-    }
-  }
 
   const determineRoundWinner = (playerChoice: RPSActions, computerChoice: RPSActions) => {
     switch (playerChoice) {
@@ -79,32 +61,33 @@ export default function RockPaperScissors() {
   const startGame = () => {
     setShowMenu(false);
     setGameResults(null);
-    setPlayersAction(null);
-    setComputersAction(null);
+    setPlayersAction(RPSActions.fist);
+    setComputersAction(RPSActions.fist);
     setPlayerScore(0);
     setComputerScore(0);
   }
 
   useEffect(() => {
-    if (playersAction) {
+    if (playersAction !== RPSActions.fist) {
       console.log('player selected:', playersAction);
-      toggleShakingFists();
-
-      const actions = Object.values(RPSActions);
+      const { rock, paper, scissors } = RPSActions;
+      const actions = [rock, paper, scissors];
       const computerSelection = actions[Math.floor(Math.random() * actions.length)];
       actionSelection(RPSUsers.computer, computerSelection);
     }
   }, [playersAction])
 
   useEffect(() => {
-    if (playersAction && computersAction) {
+    if (computersAction !== RPSActions.fist && playersAction !== RPSActions.fist) {
       console.log('calculating round winner');
       console.log({ roundsPlayed, playersAction, computersAction });
       determineRoundWinner(playersAction, computersAction);
       setRoundsPlayed((prevState) => prevState + 1);
-      setPlayersAction(null);
-      setComputersAction(null);
-      toggleShakingFists();
+
+      setTimeout(() => {
+        setPlayersAction(RPSActions.fist);
+        setComputersAction(RPSActions.fist);
+      }, 3000);
     }
     console.log({ roundsPlayed, playersAction, computersAction });
   }, [playersAction, computersAction])

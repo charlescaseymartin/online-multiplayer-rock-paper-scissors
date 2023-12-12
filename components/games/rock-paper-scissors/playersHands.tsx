@@ -1,86 +1,101 @@
 'use client';
 
-import { useEffect } from 'react';
-import { RPSActions } from '.';
+import { useEffect, useState } from 'react';
+import { RPSActions } from './types';
 
-type RockPaperScissorsPlayersHandsType = {
-  playerHand: RPSActions | null;
-  computerHand: RPSActions | null;
+
+
+type SetPlayerHandType = (value: RPSActions) => void;
+
+type PlayableHandType = {
+  src: string;
+  alt: string;
+  action: RPSActions;
+  shake?: boolean;
 }
 
+type RockPaperScissorsPlayersHandsType = {
+  playerHand: RPSActions;
+  computerHand: RPSActions;
+}
+
+
+const playableActionHands: PlayableHandType[] = [
+  {
+    action: RPSActions.fist,
+    src: '/images/games/rps/fist-icon.png',
+    alt: 'COM action',
+    shake: true,
+  },
+  {
+    action: RPSActions.paper,
+    src: '/images/games/rps/paper-icon.png',
+    alt: 'COM action',
+  },
+  {
+    action: RPSActions.rock,
+    src: '/images/games/rps/rock-icon.png',
+    alt: 'COM action',
+  },
+  {
+    action: RPSActions.scissors,
+    src: '/images/games/rps/scissors-icon.png',
+    alt: 'COM action',
+  },
+]
+
 export default function RockPaperScissorsPlayersHands({ playerHand, computerHand }: RockPaperScissorsPlayersHandsType) {
-  const convertCollectionToList = (collection: HTMLCollection): Element[] => {
-    const results: Element[] = [];
-    for (let idx = 0; idx < collection.length; idx++) {
-      results.push(collection[idx]);
-    }
-    return results;
+  const [playerActionHand, setPlayerActionHand] = useState(playableActionHands[0]);
+  const [computerActionHand, setComputerActionHand] = useState(playableActionHands[0]);
+
+  const setCompHand = (handAction: RPSActions) => {
+    const playableAction = playableActionHands.find(({ action }) => action === handAction);
+    if(playableAction) setComputerActionHand(playableAction);
   }
 
-  const displayPlayerHand = (selectedHand: RPSActions, listOfImages: Element[]) => {
-    // const currentImage = listOfImages.find(({ classList }) => !classList.contains('hidden'));
-    // if (currentImage) currentImage.classList.add('hidden');
-    let newImage = listOfImages[0];
-
-    listOfImages.forEach((imageElement) => {
-      const srcAttribute = imageElement.getAttribute('src');
-      if (srcAttribute && srcAttribute.includes(selectedHand)) {
-        newImage = imageElement;
-        return;
-      }
-    });
-
-    if (newImage) newImage.classList.remove('hidden');
+  const setPlayerHand = (handAction: RPSActions) => {
+    const playableAction = playableActionHands.find(({ action }) => action === handAction);
+    if(playableAction) setPlayerActionHand(playableAction);
   }
 
-  const determinePlayersAction = (hand: RPSActions, listOfImages: Element[]) => {
+  const displayHands = (hand: RPSActions, toggleHand: SetPlayerHandType) => {
     switch (hand) {
       case RPSActions.rock:
-        displayPlayerHand(hand, listOfImages);
+        toggleHand(hand);
         break;
 
       case RPSActions.paper:
-        displayPlayerHand(hand, listOfImages);
+        toggleHand(hand);
         break;
 
       case RPSActions.scissors:
-        displayPlayerHand(hand, listOfImages);
+        toggleHand(hand);
+        break;
+
+      default:
+        toggleHand(RPSActions.fist);
         break;
     }
   }
 
   useEffect(() => {
-    const container = document.getElementById('playersActions');
-    if (container) {
-      const computersActions = container.children[0];
-      const playersActions = container.children[1];
+    if (computerHand) {
+      displayHands(computerHand, setCompHand);
+    }
 
-      if (computerHand && computersActions) {
-        const computersActionList = convertCollectionToList(computersActions.children);
-        determinePlayersAction(computerHand, computersActionList);
-      }
-
-      if (playerHand && playersActions) {
-        const playersActionList = convertCollectionToList(playersActions.children);
-        determinePlayersAction(playerHand, playersActionList);
-      }
+    if (playerHand) {
+      displayHands(playerHand, setPlayerHand);
     }
   }, [playerHand, computerHand])
 
   return (
     <div id='playersActions' className='flex flex-row justify-between h-80'>
       <div className='flex items-center justify-center w-full mr-3 rounded-lg bg-gray-200'>
-        <img src='/images/games/rps/fist-icon.png' alt='COM action' className='w-14 h-14 shake' />
-        <img src='/images/games/rps/paper-icon.png' alt='COM action' className='w-14 h-14 hidden' />
-        <img src='/images/games/rps/rock-icon.png' alt='COM action' className='w-14 h-14 hidden' />
-        <img src='/images/games/rps/scissors-icon.png' alt='COM action' className='w-14 h-14 hidden' />
+        <img src={computerActionHand.src} alt={`${computerActionHand.alt}`} className={`w-14 h-14${computerActionHand.shake ? ' shake' : ''}`} />
       </div>
 
       <div className='flex items-center justify-center w-full rounded-lg bg-gray-200'>
-        <img src='/images/games/rps/fist-icon.png' alt='Player action' className='w-14 h-14 shake' />
-        <img src='/images/games/rps/paper-icon.png' alt='Player action' className='w-14 h-14 hidden' />
-        <img src='/images/games/rps/rock-icon.png' alt='Player action' className='w-14 h-14 hidden' />
-        <img src='/images/games/rps/scissors-icon.png' alt='Player action' className='w-14 h-14 hidden' />
+        <img src={playerActionHand.src} alt={`${playerActionHand.alt}`} className={`w-14 h-14${playerActionHand.shake ? ' shake' : ''}`} />
       </div>
     </div>
   )
