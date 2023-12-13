@@ -1,3 +1,5 @@
+'use client';
+
 import { useEffect, useState } from 'react';
 import RockPaperScissorsControls from './controls';
 import RockPaperScissorsScores from './scores';
@@ -103,7 +105,7 @@ export default function RockPaperScissors() {
   useEffect(() => console.log({ gameResults }), [gameResults])
 
   return (
-    <div className='relative'>
+    <div className='relative rounded-lg p-4 my-8 bg-gray-300'>
       <RockPaperScissorsMenu isOpen={false} gameResults={gameResults} onPlayClick={startGame} />
       <RockPaperScissorsScores computerScore={computerScore} playerScore={playerScore} />
       <RockPaperScissorsPlayersHands playerHand={playersAction} computerHand={computersAction} />

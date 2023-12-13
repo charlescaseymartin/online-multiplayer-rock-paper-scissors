@@ -1,5 +1,4 @@
-import { RPSResults } from '.';
-
+import { RPSResults } from './types';
 
 type RockPaperScissorsMenuType = {
   isOpen: boolean;

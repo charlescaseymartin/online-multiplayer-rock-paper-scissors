@@ -7,7 +7,7 @@ export default function Logo() {
         <img src='/images/logo.png' alt='logo' />
       </div>
       <div className='inline-flex text-xl text-heading-1'>
-        Simple Web Games
+        Multiplayer R.P.S.
       </div>
     </Link>
   )

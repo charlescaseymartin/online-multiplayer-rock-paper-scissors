@@ -1,4 +1,4 @@
-import GameSwitcher from '@/components/elements/gameSwitcher/gameSwitcher';
+import RockPaperScissors from '@/components/screens/combat';
 import Container from '@/components/shared/container';
 import Paragraph from '@/components/shared/paragraph';
 import Title from '@/components/shared/title';
@@ -10,7 +10,7 @@ export default function Home() {
       <Container>
         <div className='flex justify-center w-full'>
           <Title>
-            Welcome to my selection of games!
+            Welcome to Online Multiplayer Rock Paper Scissors!
           </Title>
         </div>
         <Paragraph>
@@ -18,7 +18,7 @@ export default function Home() {
           Facilis ipsum laudantium mollitia consequatur, impedit deleniti sapiente itaque optio,
           reiciendis magni repudiandae ad sint natus, obcaecati nesciunt quo nam laborum! Architecto?
         </Paragraph>
-        <GameSwitcher />
+        <RockPaperScissors />
       </Container>
     </main>
   )
