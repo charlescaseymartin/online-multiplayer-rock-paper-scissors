@@ -7,7 +7,7 @@ import Container from '../shared/container';
 import FooterNav, { FooterNavItem } from '../shared/footerNav';
 import Paragraph from '../shared/paragraph';
 import Logo from '../shared/logo';
-import { AppThemeContext } from '@/app/context/themeContext';
+import { AppContext } from '@/app/context/context';
 
 
 const footerNav1: FooterNavItem[] = [
@@ -39,7 +39,7 @@ const footerLegal: FooterNavItem[] = [
 
 
 export default function Footer() {
-  const themeContext = useContext(AppThemeContext);
+  const themeContext = useContext(AppContext);
   const isDarkMode = themeContext && themeContext.isDarkMode;
 
   useEffect(() => {

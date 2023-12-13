@@ -2,7 +2,7 @@
 
 import { useContext } from 'react';
 import Paragraph from '../shared/paragraph';
-import { AppThemeContext } from '@/app/context/themeContext';
+import { AppContext } from '@/app/context/context';
 import BtnLink from '../shared/btnLink';
 
 export type ServiceItemType = {
@@ -13,7 +13,7 @@ export type ServiceItemType = {
 }
 
 export default function Service({ title, description, icon, href }: ServiceItemType) {
-  const themeContext = useContext(AppThemeContext);
+  const themeContext = useContext(AppContext);
   const isDarkMode = themeContext && themeContext.isDarkMode;
 
   return (

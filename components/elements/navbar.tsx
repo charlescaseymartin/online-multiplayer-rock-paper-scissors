@@ -3,7 +3,7 @@
 import { useContext } from 'react';
 import Container from '../shared/container';
 import Logo from '../shared/logo';
-import { AppThemeContext } from '@/app/context/themeContext';
+import { AppContext } from '@/app/context';
 
 
 enum AppThemeModes {
@@ -13,7 +13,7 @@ enum AppThemeModes {
 
 export default function Navbar() {
   const appThemeStorgeItem = 'appTheme';
-  const themeContext = useContext(AppThemeContext);
+  const themeContext = useContext(AppContext);
   const isDarkMode = themeContext && themeContext.isDarkMode;
   const toggleSwitchColor = isDarkMode ? 'bg-white' : '';
 

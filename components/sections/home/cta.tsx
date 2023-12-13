@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import { AppThemeContext } from '@/app/context/themeContext';
+import { AppContext } from '@/app/context/context';
 import Button from '@/components/shared/button';
 import Container from '@/components/shared/container';
 import Paragraph from '@/components/shared/paragraph';
@@ -9,7 +9,7 @@ import ColourfulText from '@/components/shared/colourfulText';
 
 
 export default function CTA() {
-  const themeContext = useContext(AppThemeContext);
+  const themeContext = useContext(AppContext);
   const isDarkMode = themeContext && themeContext.isDarkMode;
   const darkModeToggle = isDarkMode ? 'from-gray-900' : 'from-gray-100 to-gray-200';
 

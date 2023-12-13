@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import './globals.css'
 import Navbar from '@/components/elements/navbar'
-import { ThemeContextProvider } from './context/themeContext'
+import { ContextProvider } from './context'
 
 export const metadata: Metadata = {
   title: 'Simple Web Games by Casey Martin',
@@ -15,13 +15,13 @@ export default function RootLayout({
 }) {
 
   return (
-    <ThemeContextProvider>
+    <ContextProvider>
       <html lang='en'>
         <body className={`overflow-hidden overflow-y-auto bg-body`}>
           <Navbar />
           {children}
         </body>
       </html>
-    </ThemeContextProvider>
+    </ContextProvider>
   )
 }

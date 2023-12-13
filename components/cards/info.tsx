@@ -1,7 +1,7 @@
 'use client';
 
 import { useContext } from 'react';
-import { AppThemeContext } from '@/app/context/themeContext';
+import { AppContext } from '@/app/context/context';
 import Paragraph from '../shared/paragraph';
 
 
@@ -12,7 +12,7 @@ type InfoCardType = {
 }
 
 export default function Info({ title, icon: Icon, children }: InfoCardType) {
-  const themeContext = useContext(AppThemeContext);
+  const themeContext = useContext(AppContext);
   const isDarkMode = themeContext && themeContext.isDarkMode;
   return (
     <div className='p-5 sm:p-6 lg:p-8 rounded-3xl border border-box-border bg-box-bg shadow-lg shadow-box-shadow relative overflow-hidden'>

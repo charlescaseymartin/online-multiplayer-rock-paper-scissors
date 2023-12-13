@@ -1,24 +1,33 @@
 'use client';
 
-import { createContext, useEffect, useState } from 'react'
+import { createContext, useEffect, useState } from 'react';
+import { Socket, io } from 'socket.io-client';
 
-type ThemeContextProviderType = {
+type ContextProviderType = {
   children: JSX.Element | JSX.Element[];
 }
 
-type AppThemeContextType = {
+type AppContextType = {
+  socket: Socket;
   isDarkMode: boolean;
   toggleDarkMode: (value: boolean) => void;
 } | undefined;
 
-export const AppThemeContext = createContext<AppThemeContextType>(undefined);
+export const AppContext = createContext<AppContextType>(undefined);
 
-export function ThemeContextProvider({ children }: ThemeContextProviderType) {
+export function ContextProvider({ children }: ContextProviderType) {
+  const socket = io('/', { autoConnect: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
 
   const toggleDarkMode = (themeMode: boolean) => {
     setIsDarkMode(themeMode);
   }
+
+  useEffect(() => {
+    if(!socket.connected) socket.connect();
+
+    socket.on('client:connected', (data) => console.log(data));
+  }, [])
 
   useEffect(() => {
     const appTheme = localStorage.getItem('appTheme');
@@ -39,8 +48,8 @@ export function ThemeContextProvider({ children }: ThemeContextProviderType) {
   }, [])
 
   return (
-    <AppThemeContext.Provider value={{ isDarkMode, toggleDarkMode }}>
+    <AppContext.Provider value={{ socket, isDarkMode, toggleDarkMode }}>
       {children}
-    </AppThemeContext.Provider>
+    </AppContext.Provider>
   )
 }
