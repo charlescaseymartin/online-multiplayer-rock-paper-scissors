@@ -16,8 +16,8 @@ type AppContextType = {
 export const AppContext = createContext<AppContextType>(undefined);
 
 export function ContextProvider({ children }: ContextProviderType) {
-  const socket = io('/', { autoConnect: false });
   const [isDarkMode, setIsDarkMode] = useState(false);
+  const socket = io('/', { autoConnect: false });
 
   const toggleDarkMode = (themeMode: boolean) => {
     setIsDarkMode(themeMode);
@@ -25,7 +25,6 @@ export function ContextProvider({ children }: ContextProviderType) {
 
   useEffect(() => {
     if(!socket.connected) socket.connect();
-
     socket.on('client:connected', (data) => console.log(data));
   }, [])
 
