@@ -1,6 +1,6 @@
 
 type ContainerType = {
-  children: JSX.Element | JSX.Element[];
+  children: React.ReactNode | JSX.Element | JSX.Element[];
   className?: string;
 }
 

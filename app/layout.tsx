@@ -17,7 +17,7 @@ export default function RootLayout({
   return (
     <ContextProvider>
       <html lang='en'>
-        <body className={`overflow-hidden overflow-y-auto bg-body`}>
+        <body className='overflow-hidden overflow-y-auto'>
           <Navbar />
           {children}
         </body>
