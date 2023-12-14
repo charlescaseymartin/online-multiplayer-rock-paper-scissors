@@ -1,3 +1,4 @@
+import { useState } from "react";
 import Container from "../shared/container";
 
 type OptionsModalType = {
@@ -6,10 +7,20 @@ type OptionsModalType = {
 }
 
 export default function OptionsModal({ isOpen, onClose }: OptionsModalType) {
+  const [formData, setFormData] = useState({})
 
-  const onFormSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const onFormSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     console.log('create lobby and invite link');
+
+    try {
+      const response = await fetch('/invite-form', { method: 'post', body: JSON.stringify(formData) });
+      const message = await response.json();
+      console.log(message);
+    } catch (err) {
+      console.error(err);
+    }
+
     onClose();
   }
 
