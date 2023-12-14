@@ -4,9 +4,11 @@
   "private": true,
   "scripts": {
     "next:dev": "nodemon",
-    "next:build": "next build && tsc --project tsconfig.server.json",
-    "next:prod": "NODE_ENV=production node out/index.js",
-    "next:lint": "next lint"
+    "next:build": "next build",
+    "next:start": "NODE_ENV=production node out/index.js",
+    "next:lint": "next lint",
+    "prod:build": "next build && tsc --project tsconfig.server.json",
+    "prod:start": "node out/index.js"
   },
   "dependencies": {
     "dotenv": "^16.3.1",
