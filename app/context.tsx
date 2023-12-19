@@ -8,31 +8,36 @@ type ContextProviderType = {
 }
 
 type AppContextType = {
-  socket: Socket;
+  socket: Socket | null;
   isDarkMode: boolean;
+  lobby: ClientSocketLobbies | null;
+  selectLobby: (value: ClientSocketLobbies) => void;
   toggleDarkMode: (value: boolean) => void;
 } | undefined;
+
+export enum ClientSocketLobbies {
+  friend = '/friend-lobby',
+  stranger = '/stranger-lobby',
+}
 
 export const AppContext = createContext<AppContextType>(undefined);
 
 export function ContextProvider({ children }: ContextProviderType) {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const socket = io('/', { autoConnect: false });
-
+  const [socket, setSocket] = useState<Socket | null>(null);
+  const [lobby, setLobby] = useState<ClientSocketLobbies | null>(null);
+  
   const toggleDarkMode = (themeMode: boolean) => {
     setIsDarkMode(themeMode);
   }
-
-  useEffect(() => {
-    if(!socket.connected) socket.connect();
-    socket.on('client:connected', (data) => console.log(data));
-  }, [])
+  
+  const selectLobby = (lobby: ClientSocketLobbies | null) => setLobby(lobby);
 
   useEffect(() => {
     const appTheme = localStorage.getItem('appTheme');
     const docElement = document.documentElement;
     const themeSwitchBtn = document.querySelector('[data-switch-theme]') as HTMLButtonElement;
-
+    
     if (appTheme === 'dark' || !appTheme && window.matchMedia('(perfers-color-scheme: dark)').matches) {
       docElement.classList.add('dark');
       themeSwitchBtn.children[0].classList.add('hidden');
@@ -46,8 +51,25 @@ export function ContextProvider({ children }: ContextProviderType) {
     }
   }, [])
 
+  useEffect(() => {
+    if (lobby) {
+      const clientSocket = io(lobby);
+      setSocket(clientSocket);
+    } else {
+      setSocket(null);
+    }
+  }, [lobby])
+  
+  const providerValue: AppContextType = { 
+    socket, 
+    lobby, 
+    isDarkMode, 
+    selectLobby, 
+    toggleDarkMode 
+  };
+
   return (
-    <AppContext.Provider value={{ socket, isDarkMode, toggleDarkMode }}>
+    <AppContext.Provider value={providerValue}>
       {children}
     </AppContext.Provider>
   )

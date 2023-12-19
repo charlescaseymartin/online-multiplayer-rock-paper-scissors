@@ -1,6 +1,7 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { AppContext, ClientSocketLobbies } from './context';
 import OptionsModal from '@/components/elements/optionsModal';
 import PageLayout from '@/components/shared/pageLayout';
 import Paragraph from '@/components/shared/paragraph';
@@ -10,18 +11,31 @@ import Title from '@/components/shared/title';
 
 export default function Home() {
   const [openOptions, setOpenOptions] = useState(false);
+  const socket = useContext(AppContext)?.socket;
+  const lobby = useContext(AppContext)?.lobby;
+  const selectLobby = useContext(AppContext)?.selectLobby;
 
   const closeOptions = () => setOpenOptions(false);
 
   const onPlayWithFriend = () => {
+    if(selectLobby) selectLobby(ClientSocketLobbies.friend);
     setOpenOptions(true);
   }
 
   const onPlayWithStranger = () => {
+    if(selectLobby) selectLobby(ClientSocketLobbies.stranger);
+    console.log('Create a new lobby and send players to the arena');
     // get the first player waiting to play
     // create a lobby
     // connect both players to the lobby
   }
+
+  useEffect(() => {
+    if(socket && lobby) {
+      if(lobby === ClientSocketLobbies.friend) socket.on('friend:connected', (data) => console.log(data));
+      if(lobby === ClientSocketLobbies.stranger) socket.on('stranger:connected', (data) => console.log(data));
+    }
+  }, [socket])
 
   return (
     <div className='relative'>
@@ -44,7 +58,7 @@ export default function Home() {
           />
           <PlayBtn
             text='Play With A Stranger'
-            clickHandler={() => console.log('Create a new lobby and send players to the arena')}
+            clickHandler={onPlayWithStranger}
           />
         </div>
       </PageLayout>
