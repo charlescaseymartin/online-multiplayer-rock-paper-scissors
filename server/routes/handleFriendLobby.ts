@@ -15,15 +15,9 @@ router.post('/create', (req: any, res) => {
   const io = req.io;
   const nspSockets = io.of(FRIENDLOBBY).sockets;
   const socketId: string = req.body.socketId;
-  const rounds: number = parseFloat(req.body.rounds);
   const isConnected = isReqConnected(socketId, nspSockets);
   
-  if (!Number.isNaN(rounds) && rounds < 3 || rounds > 7) {
-    res.status(400).send({ message: 'Bad Request' });
-  } else if (Number.isNaN(rounds)) {
-    res.status(400).send({ message: 'Bad Request' });
-  } else if (!isConnected) {
-    console.log({ isConnected })
+  if (!isConnected) {
     res.status(400).send({ message: 'Bad Request' });
   } else {
     const roomId = uuid();

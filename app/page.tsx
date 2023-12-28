@@ -2,7 +2,6 @@
 
 import { useState, useContext, useEffect } from 'react';
 import { AppContext, ClientSocketLobbies } from './context';
-import OptionsModal from '@/components/elements/optionsModal';
 import PageLayout from '@/components/shared/pageLayout';
 import Paragraph from '@/components/shared/paragraph';
 import PlayBtn from '@/components/shared/playBtn';
@@ -10,16 +9,38 @@ import Title from '@/components/shared/title';
 
 
 export default function Home() {
-  const [openOptions, setOpenOptions] = useState(false);
+  // const [openOptions, setOpenOptions] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [loadingError, setLoadingError] = useState('');
   const socket = useContext(AppContext)?.socket;
   const lobby = useContext(AppContext)?.lobby;
   const selectLobby = useContext(AppContext)?.selectLobby;
 
-  const closeOptions = () => setOpenOptions(false);
+  // const closeOptions = () => setOpenOptions(false);
 
-  const onPlayWithFriend = () => {
+  const onPlayWithFriend = async () => {
     if(selectLobby) selectLobby(ClientSocketLobbies.friend);
-    setOpenOptions(true);
+    if (socket) {
+      console.log('create lobby and invite link');
+      const options: RequestInit = {
+        method: 'post',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ socketId: socket.id }),
+      }
+
+      try {
+        setIsLoading(true);
+        const response = await fetch('/friend-lobby/create', options);
+        const message = await response.json();
+        console.log(message);
+      } catch (err: any) {
+        setLoadingError(err.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
   }
 
   const onPlayWithStranger = () => {
@@ -39,7 +60,7 @@ export default function Home() {
 
   return (
     <div className='relative'>
-      <OptionsModal isOpen={openOptions} onClose={closeOptions} />
+      {/* <OptionsModal isOpen={openOptions} onClose={closeOptions} /> */}
       <PageLayout>
         <div className='flex justify-center w-full'>
           <Title>
@@ -54,6 +75,7 @@ export default function Home() {
         <div className='flex flex-col justify-center mt-10 md:flex-row'>
           <PlayBtn
             text='Play With A Friend'
+            isLoading={isLoading}
             clickHandler={onPlayWithFriend}
           />
           <PlayBtn
