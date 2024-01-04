@@ -1,37 +1,36 @@
 'use client';
 
 import { createContext, useEffect, useState } from 'react';
-import { Socket, io } from 'socket.io-client';
+import ClientIOHandler from './client-io';
 
 type ContextProviderType = {
   children: JSX.Element | JSX.Element[];
 }
 
 type AppContextType = {
-  socket: Socket | null;
+  socket: ClientIOHandler;
   isDarkMode: boolean;
-  lobby: ClientSocketLobbies | null;
-  selectLobby: (value: ClientSocketLobbies) => void;
+  // lobby: ClientSocketLobbies | null;
+  // selectLobby: (value: ClientSocketLobbies) => void;
   toggleDarkMode: (value: boolean) => void;
 } | undefined;
 
-export enum ClientSocketLobbies {
-  friend = '/friend-lobby',
-  stranger = '/stranger-lobby',
-}
+// export enum ClientSocketLobbies {
+//   friend = '/friend-lobby',
+//   stranger = '/stranger-lobby',
+// }
+
+const clientIOHandler = new ClientIOHandler();
 
 export const AppContext = createContext<AppContextType>(undefined);
 
 export function ContextProvider({ children }: ContextProviderType) {
   const [isDarkMode, setIsDarkMode] = useState(false);
-  const [socket, setSocket] = useState<Socket | null>(null);
-  const [lobby, setLobby] = useState<ClientSocketLobbies | null>(null);
+  const socket = clientIOHandler;
   
   const toggleDarkMode = (themeMode: boolean) => {
     setIsDarkMode(themeMode);
   }
-  
-  const selectLobby = (lobby: ClientSocketLobbies | null) => setLobby(lobby);
 
   useEffect(() => {
     const appTheme = localStorage.getItem('appTheme');
@@ -51,20 +50,9 @@ export function ContextProvider({ children }: ContextProviderType) {
     }
   }, [])
 
-  useEffect(() => {
-    if (lobby) {
-      const clientSocket = io(lobby);
-      setSocket(clientSocket);
-    } else {
-      setSocket(null);
-    }
-  }, [lobby])
-  
   const providerValue: AppContextType = { 
     socket, 
-    lobby, 
     isDarkMode, 
-    selectLobby, 
     toggleDarkMode 
   };
 

@@ -2,17 +2,20 @@
 
 import { useContext, useLayoutEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { AppContext } from '@/app/context';
+import { AppContext, ClientSocketLobbies } from '@/app/context';
 import RockPaperScissors from '@/components/screens/combat';
 import PageLayout from '@/components/shared/pageLayout';
 
 
 export default function Area() {
   const socket = useContext(AppContext)?.socket;
+  const selectLobby = useContext(AppContext)?.selectLobby;
+  // const socket = useContext(AppContext)?.socket;
   const { push } = useRouter();
 
   useLayoutEffect(() => {
     (async () => {
+      // selectLobby(ClientSocketLobbies.stranger)
       if (socket) {
         try {
           const response = await fetch('/friend-lobby/validate', {
