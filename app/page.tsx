@@ -20,7 +20,7 @@ export default function Home() {
     console.log('Clicked!');
     // if(selectLobby) selectLobby(ClientSocketLobbies.friend);
     if (socket) {
-      socket.createFriendLobby();
+      socket.playWithFriend();
       // console.log('create lobby and invite link');
       // const options: RequestInit = {
       //   method: 'post',
